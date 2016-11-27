@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Platform Deliveries</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Platform Deliveries</h1>
+        <div id="cal-heatmap"></div>
+    </div>
+
+    <div class="container" id="timeline">
+        <h4><span class="glyphicon glyphicon-info-sign"></span> Softwares</h4>
+        <h4>
+            <span 
+                class="label soft" 
+                v-for="(item, key) in softwares" 
+                v-on:click="filter(key)"
+                v-bind:class="{'label-danger': currentSoft===key, 'label-default': currentSoft!==key}"
+            >
+                {{key}}
+            </span>
+        </h4>
+        <h4><span class="glyphicon glyphicon-info-sign"></span> Enviromnents</h4>
+        <h4>
+            <span 
+                class="label soft" 
+                v-for="(item, key) in environments" 
+                v-on:click="filterEnv(key)"
+                v-bind:class="{'label-danger': currentEnv===key, 'label-default': currentEnv!==key}"
+            >
+                {{key}}
+            </span>
+        </h4>
+
+        <ul class="timeline">
+            <li v-for="delivery in deliveries" 
+                v-if="(currentSoft === delivery.software || currentSoft == '') && (currentEnv === delivery.environment || currentEnv == '')"
+                v-bind:class="delivery.date"
+            >
+                <div class="timeline-badge success"><i class="glyphicon glyphicon-ok"></i></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <h4 class="timeline-title">
+                            <span class="label label-info">{{delivery.environment}}</span> {{delivery.software}} {{delivery.version}}
+                            <!--span class="pull-right glyphicon glyphicon-trash" v-on:click="remove(delivery.date)"></span-->
+                        </h4>
+                        <p>
+                            <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{delivery.date}}</small>
+                        </p>
+                        
+                    </div>
+                    <div class="timeline-body">
+                        <p>Version {{delivery.version}} - <a v-bind:href="delivery | getChangelogURL" target="_blank">See Changelog</a></p>
+                        <p>{{delivery.repository}}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/vue-resource/dist/vue-resource.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
