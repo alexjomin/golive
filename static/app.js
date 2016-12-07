@@ -1,8 +1,11 @@
 var cal = new CalHeatMap();
+var startDate = new Date();
+startDate.setMonth(startDate.getMonth() - 11, 1);
+
 cal.init({
     data: "/api/heatmap",
     domain: "month",
-	  start: new Date(2016, 0, 1),
+	  start: startDate,
     domainGutter: 10,
     range: 12,
     legend: [1, 3, 5, 10, 20],
@@ -11,7 +14,7 @@ cal.init({
 
 var apiURL = '/api';
 
-var demo = new Vue({
+var vue = new Vue({
 
   el: '#timeline',
 
