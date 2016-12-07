@@ -6,7 +6,7 @@ With **golive**, keep track of your deliveries.
 
 ### what, when and where ?
 
-In a continious deployment workflow, it's sometimes difficult to remember **which** software has been deployed, **when** and **where**. golive offers a dead simple api to record and retrieve your deliveries, it also come with a frontend to display the timeline with and heatmap.
+In a continious deployment workflow, it's sometimes difficult to remember **which** software has been deployed, **when** and **where**. golive offers a dead simple api to record and retrieve your deliveries, it also come with a frontend to display the timeline with a heatmap.
 
 ![screenshot](etc/screenshot.png)
 
