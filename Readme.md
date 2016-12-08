@@ -1,4 +1,4 @@
-# Golive
+# Golive [![Build Status](https://travis-ci.org/alexjomin/golive.svg?branch=master)](https://travis-ci.org/alexjomin/golive)
 
 ## Purpose
 

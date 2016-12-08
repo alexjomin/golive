@@ -1,4 +1,14 @@
-### chore: add travis CI (HEAD -> feat/travis)
+### chore: add build status image (HEAD -> master)
+>Thu, 8 Dec 2016 14:06:34 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### chore: add travis CI (origin/feat/travis, feat/travis)
 >Thu, 8 Dec 2016 12:09:27 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
@@ -18,7 +28,7 @@
 
 
 
-### docs(readme): fix a typo (origin/master, master)
+### docs(readme): fix a typo
 >Wed, 7 Dec 2016 20:27:42 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
