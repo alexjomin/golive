@@ -1,4 +1,14 @@
-### docs(readme): fix a typo (HEAD -> master)
+### test(handler) checking api endpoints (HEAD -> feat/travis)
+>Thu, 8 Dec 2016 12:08:32 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### docs(readme): fix a typo (origin/master, master)
 >Wed, 7 Dec 2016 20:27:42 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)

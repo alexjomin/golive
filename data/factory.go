@@ -2,7 +2,7 @@ package data
 
 const (
 	// SourceBolt is source from BoltDB
-	SourceBolt = "bolt"
+	SourceBolt = "Bolt"
 
 	// SourceMock is for mocking data persitance
 	SourceMock = "Mock"
