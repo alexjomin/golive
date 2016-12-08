@@ -1,4 +1,24 @@
-### docs(readme): fix a typo (HEAD -> master)
+### chore: add travis CI (HEAD -> feat/travis)
+>Thu, 8 Dec 2016 12:09:27 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### test(handler) checking api endpoints
+>Thu, 8 Dec 2016 12:08:32 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### docs(readme): fix a typo (origin/master, master)
 >Wed, 7 Dec 2016 20:27:42 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
