@@ -55,7 +55,7 @@
                             <!--span class="pull-right glyphicon glyphicon-trash" v-on:click="remove(delivery.date)"></span-->
                         </h4>
                         <p>
-                            <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{delivery.date}}</small>
+                            <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{delivery.date | formatDate}}</small>
                         </p>
                         
                     </div>
@@ -69,6 +69,7 @@
     </div>
     <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vue-resource/dist/vue-resource.js"></script>
     <script src="app.js"></script>

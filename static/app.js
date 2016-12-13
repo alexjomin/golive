@@ -40,7 +40,7 @@ var vue = new Vue({
       return newline > 0 ? v.slice(0, newline) : v
     },
     formatDate: function (v) {
-      return v.replace(/T|Z/g, ' ')
+      return moment(v).format('MMMM Do YYYY, h:mm:ss a'); 
     },
     getChangelogURL: function(v) {
       if(v.repository.length === 0) return;

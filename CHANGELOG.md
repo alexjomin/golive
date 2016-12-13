@@ -1,4 +1,14 @@
-### chore: add build status image (HEAD -> master)
+### feat(frontend): format the date of deployment with moment.js (HEAD -> master)
+>Tue, 13 Dec 2016 20:16:06 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### chore: add build status image (origin/master)
 >Thu, 8 Dec 2016 14:06:34 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
