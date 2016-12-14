@@ -1,4 +1,14 @@
-### feat(frontend): format the date of deployment with moment.js (HEAD -> master)
+### docs(readme): add features list and a link to docker image (HEAD -> master)
+>Wed, 14 Dec 2016 08:08:13 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### feat(frontend): format the date of deployment with moment.js
 >Tue, 13 Dec 2016 20:16:06 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
@@ -8,7 +18,7 @@
 
 
 
-### chore: add build status image (origin/master)
+### chore: add build status image
 >Thu, 8 Dec 2016 14:06:34 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
