@@ -79,40 +79,24 @@ func (s *boltSource) GetAll() ([]model.Delivery, error) {
 
 	p := []model.Delivery{}
 
-	s.db.View(func(tx *bolt.Tx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 
-		// Assume our events bucket exists and has RFC3339 encoded time keys.
-		//b := tx.Bucket([]byte(s.bucket)).Cursor()
-		b := tx.Bucket([]byte(s.bucket))
+		c := tx.Bucket([]byte(s.bucket)).Cursor()
 
-		b.ForEach(func(k, v []byte) error {
+		i := 0
+
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
 			var d model.Delivery
 			json.Unmarshal(v, &d)
 			p = append(p, d)
-			return nil
-		})
-
-		for i := len(p)/2 - 1; i >= 0; i-- {
-			opp := len(p) - 1 - i
-			p[i], p[opp] = p[opp], p[i]
+			i++
 		}
 
 		return nil
 
-		/*
-			// Our time range spans the 90's decade.
-			min := []byte("1990-01-01T00:00:00Z")
-			max := []byte("2020-01-01T00:00:00Z")
-
-			// Iterate over the 90's.
-			for k, v := c.Seek(min); k != nil && bytes.Compare(k, max) <= 0; k, v = c.Next() {
-				fmt.Printf("%s: %s\n", k, v)
-			}
-		*/
-
 	})
 
-	return p, nil
+	return p, err
 
 }
 

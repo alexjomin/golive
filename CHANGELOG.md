@@ -1,4 +1,14 @@
-### docs(readme): add features list and a link to docker image (HEAD -> master)
+### refactor(dao): better iterating over keys in GetAll (HEAD -> master)
+>Sat, 17 Dec 2016 20:01:46 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### docs(readme): add features list and a link to docker image (origin/master)
 >Wed, 14 Dec 2016 08:08:13 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
