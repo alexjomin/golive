@@ -1,4 +1,14 @@
-### refactor(dao): better iterating over keys in GetAll (HEAD -> master)
+### feat(dao,handler): add limit and offset to GetAll, handler now requests for deliveries in a 30 days time lapse (HEAD -> feat/limitAndOffsetOnDAO)
+>Mon, 19 Dec 2016 12:36:43 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### refactor(dao): better iterating over keys in GetAll (origin/master, master)
 >Sat, 17 Dec 2016 20:01:46 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
@@ -8,7 +18,7 @@
 
 
 
-### docs(readme): add features list and a link to docker image (origin/master)
+### docs(readme): add features list and a link to docker image
 >Wed, 14 Dec 2016 08:08:13 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)

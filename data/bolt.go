@@ -1,6 +1,7 @@
 package data
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 
@@ -13,6 +14,8 @@ type boltSource struct {
 	bucket []byte
 }
 
+const bucketName = "deliveries"
+
 // NewBoltSource returns an bolt based data source
 func NewBoltSource(path string) (Source, error) {
 
@@ -23,12 +26,10 @@ func NewBoltSource(path string) (Source, error) {
 	}
 
 	err = db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucket([]byte("deliveries"))
+		_, err := tx.CreateBucketIfNotExists([]byte(bucketName))
 
 		if err != nil {
-			if err != bolt.ErrBucketExists {
-				return err
-			}
+			return err
 		}
 
 		return nil
@@ -40,7 +41,7 @@ func NewBoltSource(path string) (Source, error) {
 
 	return &boltSource{
 		db:     db,
-		bucket: []byte("deliveries"),
+		bucket: []byte(bucketName),
 	}, nil
 
 }
@@ -75,7 +76,7 @@ func (s *boltSource) Delete(key string) error {
 	})
 }
 
-func (s *boltSource) GetAll() ([]model.Delivery, error) {
+func (s *boltSource) GetAll(offset, limit int) ([]model.Delivery, error) {
 
 	p := []model.Delivery{}
 
@@ -86,6 +87,14 @@ func (s *boltSource) GetAll() ([]model.Delivery, error) {
 		i := 0
 
 		for k, v := c.Last(); k != nil; k, v = c.Prev() {
+			if offset > 0 && i < offset {
+				i++
+				continue
+			}
+
+			if limit > 0 && limit == len(p) {
+				break
+			}
 			var d model.Delivery
 			json.Unmarshal(v, &d)
 			p = append(p, d)
@@ -97,6 +106,34 @@ func (s *boltSource) GetAll() ([]model.Delivery, error) {
 	})
 
 	return p, err
+
+}
+
+func (s *boltSource) GetBetweenInterval(from, to string) ([]model.Delivery, error) {
+
+	p := []model.Delivery{}
+
+	s.db.View(func(tx *bolt.Tx) error {
+
+		c := tx.Bucket([]byte(s.bucket)).Cursor()
+
+		min := []byte(from)
+		max := []byte(to)
+
+		// Iterate over the time window
+		for k, v := c.Seek(max); k != nil && bytes.Compare(k, min) >= 0; k, v = c.Prev() {
+			var d model.Delivery
+			json.Unmarshal(v, &d)
+			if d.Date == "" {
+				continue
+			}
+			p = append(p, d)
+		}
+
+		return nil
+	})
+
+	return p, nil
 
 }
 

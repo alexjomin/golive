@@ -11,7 +11,10 @@ type Source interface {
 	Delete(string) error
 
 	// Get a document by key
-	GetAll() ([]model.Delivery, error)
+	GetAll(offset, limit int) ([]model.Delivery, error)
+
+	// Get Between an interval
+	GetBetweenInterval(from, to string) ([]model.Delivery, error)
 
 	// Insert a document
 	Insert(string, interface{}) error
