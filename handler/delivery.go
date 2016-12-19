@@ -94,7 +94,20 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // Get returns all the deliveries
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 
-	data, err := h.Source.GetAll()
+	from, err := data.GetDateFromNbOfDays(-30)
+
+	if err != nil {
+		e := Error{
+			Message: "An error occured when trying to retrieve the deliveries",
+		}
+		JSONWithHTTPCode(w, e, 500)
+		return
+	}
+
+	*from = from.UTC()
+	n := time.Now().UTC().Truncate(time.Minute).Format(time.RFC3339)
+
+	data, err := h.Source.GetBetweenInterval(from.Format(time.RFC3339), n)
 
 	if err != nil {
 		e := Error{
@@ -111,7 +124,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // Heatmap returns a list of timestamp where delivery occurs
 func (h *Handler) Heatmap(w http.ResponseWriter, r *http.Request) {
 
-	data, err := h.Source.GetAll()
+	data, err := h.Source.GetAll(0, 0)
 
 	if err != nil {
 		e := Error{
