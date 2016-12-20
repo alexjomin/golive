@@ -19,7 +19,7 @@ h4 {
     list-style: none;
     padding: 0 0 20px;
     position: relative;
-    margin-top: -15px
+    margin-top: -10px
 }
 .timeline:before {
     top: 30px;
@@ -121,4 +121,9 @@ h4 {
 }
 .timeline-empty {
   color: #a5a5a5;
+}
+
+.label {
+  display: inline-block;
+  padding: .4em .6em;
 }
