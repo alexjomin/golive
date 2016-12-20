@@ -119,3 +119,6 @@ h4 {
 .timeline-body>h4 {
     margin-bottom: 0!important
 }
+.timeline-empty {
+  color: #a5a5a5;
+}
