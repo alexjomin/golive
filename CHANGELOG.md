@@ -1,4 +1,14 @@
-### feat(dao,handler): add limit and offset to GetAll, handler now requests for deliveries in a 30 days time lapse (HEAD -> feat/limitAndOffsetOnDAO)
+### fix(dao): GetBetweenInterval nows returns data even if max is not found (HEAD -> master)
+>Tue, 20 Dec 2016 16:12:56 +0100
+
+>Author: Alexandre Jomin (alexandrejomin@gmail.com)
+
+>Commiter: Alexandre Jomin (alexandrejomin@gmail.com)
+
+
+
+
+### feat(dao,handler): add limit and offset to GetAll, handler now requests for deliveries in a 30 days time lapse (feat/limitAndOffsetOnDAO)
 >Mon, 19 Dec 2016 12:36:43 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
@@ -8,7 +18,7 @@
 
 
 
-### refactor(dao): better iterating over keys in GetAll (origin/master, master)
+### refactor(dao): better iterating over keys in GetAll
 >Sat, 17 Dec 2016 20:01:46 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)
@@ -48,7 +58,7 @@
 
 
 
-### chore: add travis CI (origin/feat/travis, feat/travis)
+### chore: add travis CI (feat/travis)
 >Thu, 8 Dec 2016 12:09:27 +0100
 
 >Author: Alexandre Jomin (alexandrejomin@gmail.com)

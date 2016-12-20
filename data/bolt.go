@@ -110,10 +110,9 @@ func (s *boltSource) GetAll(offset, limit int) ([]model.Delivery, error) {
 }
 
 func (s *boltSource) GetBetweenInterval(from, to string) ([]model.Delivery, error) {
-
 	p := []model.Delivery{}
 
-	s.db.View(func(tx *bolt.Tx) error {
+	err := s.db.View(func(tx *bolt.Tx) error {
 
 		c := tx.Bucket([]byte(s.bucket)).Cursor()
 
@@ -121,7 +120,10 @@ func (s *boltSource) GetBetweenInterval(from, to string) ([]model.Delivery, erro
 		max := []byte(to)
 
 		// Iterate over the time window
-		for k, v := c.Seek(max); k != nil && bytes.Compare(k, min) >= 0; k, v = c.Prev() {
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
+			if !(bytes.Compare(k, min) >= 0 && bytes.Compare(k, max) <= 0) {
+				continue
+			}
 			var d model.Delivery
 			json.Unmarshal(v, &d)
 			if d.Date == "" {
@@ -133,7 +135,7 @@ func (s *boltSource) GetBetweenInterval(from, to string) ([]model.Delivery, erro
 		return nil
 	})
 
-	return p, nil
+	return p, err
 
 }
 
