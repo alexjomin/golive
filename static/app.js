@@ -1,16 +1,30 @@
 var cal = new CalHeatMap();
 var startDate = new Date();
+var clickDate = null;
 startDate.setMonth(startDate.getMonth() - 11, 1);
 
 cal.init({
-    data: "/api/heatmap",
-    domain: "month",
-	  start: startDate,
-    domainGutter: 10,
-    range: 12,
-    legend: [1, 3, 5, 10, 20],
+  data: "/api/heatmap",
+  domain: "month",
+  start: startDate,
+  domainGutter: 10,
+  range: 12,
+  legend: [1, 3, 5, 10, 20],
+  onClick: function(date, nb) {
+    
+    if (clickDate !== null && clickDate.toDateString() == date.toDateString()) {
+      clickDate = null;
+    } else {
+      clickDate = date;
+    }
+    
+    vue.filterDate(clickDate);
+    
+  }
 });
 
+// Set moment locale
+moment.locale(navigator.language || navigator.userLanguage);
 
 var apiURL = '/api';
 
@@ -22,9 +36,14 @@ var vue = new Vue({
     data: [],
     deliveries: [],
     softwares: {},
-    environments: {},
+    environments: [],
     currentSoft: "",
     currentEnv: "",
+    colors: [
+      '#2ecc71',
+      '#5bc0de',
+      '#3498db'
+    ]
   },
 
   created: function () {
@@ -41,7 +60,7 @@ var vue = new Vue({
       return newline > 0 ? v.slice(0, newline) : v;
     },
     formatDate: function (v) {
-      return moment(v).format('MMMM Do YYYY, h:mm:ss a'); 
+      return moment(v).format('LLLL');
     },
     getChangelogURL: function(v) {
       if(v.repository.length === 0) return;
@@ -50,17 +69,17 @@ var vue = new Vue({
   },
 
   methods: {
-    populateDeliveries: function() {
+    populateDeliveries: function(data) {
       
       this.deliveries = [];
       
-      if (this.data.length) {
-        for (var i in this.data) {
+      if (data.length) {
+        for (var i in data) {
           if (
-              (this.currentSoft === "" || this.data[i].software == this.currentSoft) &&
-              (this.currentEnv === "" || this.data[i].environment == this.currentEnv)
+              (this.currentSoft === "" || data[i].software == this.currentSoft) &&
+              (this.currentEnv === "" || data[i].environment == this.currentEnv)
             ) {
-            this.deliveries.push(this.data[i]);
+            this.deliveries.push(data[i]);
           }
         }
       }
@@ -76,7 +95,7 @@ var vue = new Vue({
         this.currentSoft = name;
       }
       
-      this.populateDeliveries();
+      this.populateDeliveries(this.data);
       
     },
     filterEnv: function(name){
@@ -89,7 +108,25 @@ var vue = new Vue({
         this.currentEnv = name;
       }
       
-      this.populateDeliveries();
+      this.populateDeliveries(this.data);
+      
+    },
+    filterDate: function(date){
+      
+      if (date === null) {
+        this.populateDeliveries(this.data);
+        return;
+      }
+      
+      date = date.toDateString();
+      var data = [];
+      for (var i in this.data) {
+        if ((new Date(this.data[i].date)).toDateString() == date) {
+          data.push(this.data[i]);
+        }
+      }
+      
+      this.populateDeliveries(data);
       
     },
     fetchData: function () {
@@ -99,11 +136,22 @@ var vue = new Vue({
       xhr.onload = function () {
         d = JSON.parse(xhr.responseText);
         self.data = d;
-        for(var i = 0; i < d.length ; i++) {
+        var index;
+        
+        for (var i = 0; i < d.length ; i++) {
             self.softwares[d[i].software] = true;
-            self.environments[d[i].environment] = true;
+            
+            index = self.environments.indexOf(d[i].environment);
+            if (index === -1) {
+              self.environments.push(d[i].environment);
+              index = self.environments.length-1;
+            }
+            
+            self.data[i].environmentColor = self.colors[index];
+            
         }
-        self.populateDeliveries();
+        
+        self.populateDeliveries(self.data);
       };
       xhr.send();
     }
