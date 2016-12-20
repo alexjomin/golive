@@ -1,21 +1,37 @@
 language: go
 
 go:
-  - 1.6
-  - 1.7
-  - tip
+- 1.7
+
+services:
+- docker
 
 before_install:
-  - GLIDE_OS_ARCH=`go env GOHOSTOS`-`go env GOHOSTARCH`
-  - GLIDE_TAG=$(curl -s https://glide.sh/version)
-  - GLIDE_LATEST_RELEASE_URL="https://github.com/Masterminds/glide/releases/download/${GLIDE_TAG}/glide-${GLIDE_TAG}-${GLIDE_OS_ARCH}.tar.gz"
-  - wget ${GLIDE_LATEST_RELEASE_URL} -O /tmp/glide.tar.gz
-  - mkdir /tmp/glide
-  - tar --directory=/tmp/glide -xvf /tmp/glide.tar.gz
-  - export PATH=$PATH:/tmp/glide/${GLIDE_OS_ARCH}
+- GLIDE_OS_ARCH=`go env GOHOSTOS`-`go env GOHOSTARCH`
+- GLIDE_TAG=$(curl -s https://glide.sh/version)
+- GLIDE_LATEST_RELEASE_URL="https://github.com/Masterminds/glide/releases/download/${GLIDE_TAG}/glide-${GLIDE_TAG}-${GLIDE_OS_ARCH}.tar.gz"
+- wget ${GLIDE_LATEST_RELEASE_URL} -O /tmp/glide.tar.gz
+- mkdir /tmp/glide
+- tar --directory=/tmp/glide -xvf /tmp/glide.tar.gz
+- export PATH=$PATH:/tmp/glide/${GLIDE_OS_ARCH}
 
 script:
-  - mkdir $GOPATH/bin
-  - glide install
-  - make test
-  - make all
+- glide install
+- make test
+- make all
+
+after_success:
+- if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then exit fi
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=$DOCKER_USER/golive
+- export COMMIT=${TRAVIS_COMMIT::6} 
+- echo $REPO:$COMMIT 
+- docker build -t $REPO:$COMMIT .
+- docker tag $REPO:$COMMIT $REPO:latest
+- docker push $REPO
+
+env:
+  global:
+  - secure: qpyTbzc84aXwa7P2GziDqdnEhCeUDmtQ56UGesMp9FCOsAjIJPH24pLQOIwYw5N1+2OJzEF5WkVGjDO4K67nbcX9OYDlXE7FvcipMFiC4cFV753aXTIYBM5H8LHVCkT8NpmThj6bvQk8yNyqHKtSDvsKyZcRowkIV/XKlIMbSJMeAxPAqJMJszWQBGeh/8YX6INTmPcHt2t77TGwc7e9ASDHnpWrImUuD+Cyseijiq6RZ9rHdcaOydHGdV5GFL5az3pxO7J07z9pJlXLW0uD9bXa9w0zibmt0o7GaRaH1eN5i1n0uU+SKOmYBA35ekQCuOLuQHNu9oCV1tAodHp1vKYApjZf5Vo75ei1/Wqubr921OcUxQnRX6n5QVbx8m+hJuxihccdhUK6JARgjxjCPObdVMsrnPgX36iSSbbVy5EaYcCUjEqVU85oYzCTa21WlUich+ZEhjbbbCE+u3uuwLj2ZWVtOZx/O6jOWjpiqshhmzXVqlBDJw0QekqNBQ6DN9WA13YtxxPz8Y14eaAdFU7nWTqLBnYRDvtgtOBQ+Ha6TvQ/SFqvwq9ofgKbASuMpZjG0zp8LuElX+Y4MVBbf1mrlJGIk3/Hke52Hrn3qQLbScqiwdV1aej5qa9mvvWcg2WvY8PunWaHTuAwDKRgr+MXyA+XRN684Bm5CH4p/bo=
+  - secure: QFMtGHyh7jpkHaFsCLgWB13KdY3wuaXfdlh/4QhBJpZ4nhrVfDIgzTd0bSjKTmx9A+6q6NLAcs9huAmaO3BOYi4MYfq6KI2tbqc5tgAftShS6y5R/RUQCjjOcsBZdHOI8YUMnNF7kMYuNS5nC+7HNpCXVL1PFVkDjUUvbhnMtpxxQapwuyfWUSrLK4TrXNaTlmH9aVbD+WpxKIy7L/KqOAqP/og5qXtZ8UZjQNzrOAOKvPVgcP8k4jZa0zXHHQwciHjI22pTYu2oF1CdwucMeKUYiephkhbfSMq7uHgykIIs3qP5VKdcqtc83mVfsgk8eCcmviiqqazUD/hJC8MYoJa8qy5SOFO2TD2519YcylOJEs8mL4zYVR7Ud0euNjCW0UEbIAnkkcGue+3PA5vh+pyxOdpnzLt6NqZHCzawiKF4+jww8Nd6x0b+f4vDLloXp+OWlSwuwylb3ShLuVlUigmKU84w6LkRS7W3r2bpOK1x41DrsgyzA64M+hKRHNZhmMx4DUb+kBicUldVewzr8ebkyCeza4ShS/tu6nUCemB+7zyVLRsmzRQxvvV0dHoajcsrhaBHOZjI0/T+vFMEhYzw5gamIFMKvkaNSAq0ul8eRD7D9jRZ8/Jmv43kjWOwcWYiMREXfmZ4EQrZ8z2GNWoIDNFAmAyKuEtOkXsY35Q=
+  - secure: eivk0IfPwPp2MMKjEc9yUSirElRdGYbB+ZAXeWBIK3PgaVZfZH7djZbz/iGvJGe9HsH9vMwF3US6OA9v5YYlBMmUaq4OgeNyZi8YmaXZHQ5tkRLAktOzfhVt/j7HUhwdWHogZwunuYZybxFafIc/CamBrvsLWUez/KKo3IQzEPHXaAApH7qMsa9ZfkuhSxuWFJgETR48QNqgXEkIo7TJC4HowkzvXmpSz9mmXjOEjy46HZmAo8rqJ7uhjo4bGWKawMWe4DMiWcKwOqBnOYqkY+ATprZ9lR4jKrRSMQnmLs1fTbEmOLSVMjFokaO9n4N3oHEqN51lLsTNrK4WQ36fhEpTr++hjc2vzkGBtgXM3UieXFW3jM43Ha+6a+ijX2vj6O3/cje+MTY6y/mwDjdBWdEG16wmINua+usE2X+Yqr4XEOoxb7V/xJYMyWq1isbp/hXyftLcxISSBny/UBJA2j7qWCTNXA0cSWAv2I0d29wRqqd4a2PkLyEt4bZ3gwLdp1D5E3aLyAesVyxrNhXdR0WNnJ/e/oUE5cNdSleLnDLa6/1d56eUFEny0sU53mdlRCzVLDjvBkViZ4qNIsrln8P/JA/V9H29qncvMM1b6LJvZ36+VEoHPFlw4gJQWaWWTHSrffSfB/cSsuo94gdn7jwsKOH2YqzjeESUKVaVpDo=
