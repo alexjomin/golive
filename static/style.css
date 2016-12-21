@@ -7,12 +7,16 @@ body {
 }
 
 h4 {
-    margin-top:15px!important;
+    margin-top:13px!important;
 }
 
 .soft {
     margin-right: 5px;
     cursor: pointer;
+}
+
+#cal-heatmap {
+  min-height: 127px;
 }
 
 .timeline {
@@ -46,12 +50,10 @@ h4 {
 }
 .timeline>li>.timeline-panel {
     margin-left: 55px;
-    float: left;
     top: 19px;
     padding: 0 10px 10px 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
     background-color: #fff
 }
 .timeline>li>.timeline-badge {
@@ -102,7 +104,8 @@ h4 {
 }
 .timeline-title {
     margin-top: 0;
-    color: inherit
+    color: inherit;
+    line-height: 1.5em;
 }
 .timeline-body>p,
 .timeline-body>ul {
@@ -127,6 +130,7 @@ h4 {
   padding: .4em .6em;
   transition: opacity .3s;
   user-select: none;
+  margin-top: 3px;
 }
 .label-off {
   opacity: .4;
