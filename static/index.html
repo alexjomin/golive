@@ -8,7 +8,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/cal-heatmap/3.6.0/cal-heatmap.css" />
 </head>
 
 <body>
@@ -25,7 +25,7 @@
                 class="label soft" 
                 v-for="(item, key) in softwares" 
                 v-on:click="filter(key)"
-                v-bind:class="{'label-danger': currentSoft===key, 'label-default': currentSoft!==key}"
+                v-bind:class="{'label-danger': currentSoft===key, 'label-default': (currentSoft!==key && !currentSoft), 'label-default label-off': (currentSoft!==key && currentSoft)}"
             >
                 {{key}}
             </span>
@@ -35,10 +35,11 @@
             <span 
                 class="label soft" 
                 v-for="(item, key) in environments" 
-                v-on:click="filterEnv(key)"
-                v-bind:class="{'label-danger': currentEnv===key, 'label-default': currentEnv!==key}"
+                v-on:click="filterEnv(item)"
+                v-bind:class="{'label-danger': currentEnv===item, 'label-default': (currentEnv!==item && !currentEnv), 'label-default label-off': (currentEnv!==item && currentEnv)}"
+                v-bind:style="{ backgroundColor: colors[key] }"
             >
-                {{key}}
+                {{item}}
             </span>
         </h4>
 
@@ -50,7 +51,7 @@
                 <div class="timeline-panel">
                     <div class="timeline-heading">
                         <h4 class="timeline-title">
-                            <span class="label label-info">{{delivery.environment}}</span> {{delivery.software}} {{delivery.version}}
+                            <span class="label label-info" v-bind:style="{ backgroundColor: delivery.environmentColor }">{{delivery.environment}}</span> {{delivery.software}} {{delivery.version}}
                             <!--span class="pull-right glyphicon glyphicon-trash" v-on:click="remove(delivery.date)"></span-->
                         </h4>
                         <p>
@@ -70,8 +71,8 @@
         </div>
     </div>
     <script type="text/javascript" src="//d3js.org/d3.v3.min.js"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/cal-heatmap/3.6.0/cal-heatmap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="node_modules/vue-resource/dist/vue-resource.js"></script>
     <script src="app.js"></script>

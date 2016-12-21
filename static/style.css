@@ -23,7 +23,7 @@ h4 {
 }
 .timeline:before {
     top: 30px;
-    bottom: 25px;
+    bottom: 20px;
     position: absolute;
     content: " ";
     width: 3px;
@@ -34,7 +34,7 @@ h4 {
 .timeline>li,
 .timeline>li>.timeline-panel {
     margin-bottom: 5px;
-    position: relative
+    position: relative;
 }
 .timeline>li:after,
 .timeline>li:before {
@@ -48,7 +48,7 @@ h4 {
     margin-left: 55px;
     float: left;
     top: 19px;
-    padding: 10px 10px 10px 15px;
+    padding: 0 10px 10px 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%;
@@ -122,8 +122,12 @@ h4 {
 .timeline-empty {
   color: #a5a5a5;
 }
-
 .label {
   display: inline-block;
   padding: .4em .6em;
+  transition: opacity .3s;
+  user-select: none;
+}
+.label-off {
+  opacity: .4;
 }
