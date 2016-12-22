@@ -24,10 +24,10 @@
             <span 
                 class="label soft" 
                 v-for="(item, key) in softwares" 
-                v-on:click="filter(key)"
-                v-bind:class="{'label-danger': currentSoft===key, 'label-default': (currentSoft!==key && !currentSoft), 'label-default label-off': (currentSoft!==key && currentSoft)}"
+                v-on:click="filter(item)"
+                v-bind:class="{'label-danger': currentSoft===item, 'label-default': (currentSoft!==item && !currentSoft), 'label-default label-off': (currentSoft!==item && currentSoft)}"
             >
-                {{key}}
+                {{item}}
             </span>
         </h4>
         <h4><span class="glyphicon glyphicon-info-sign"></span> Environments</h4>
