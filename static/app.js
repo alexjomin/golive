@@ -1,31 +1,85 @@
+// CalHeatmap
 var cal = new CalHeatMap();
-var startDate = new Date();
 var clickDate = null;
-startDate.setMonth(startDate.getMonth() - 11, 1);
+var windowWidth = 0;
+var resizeTimeout = 0;
 
-cal.init({
-  data: "/api/heatmap",
-  domain: "month",
-  start: startDate,
-  domainGutter: 10,
-  range: 12,
-  legend: [1, 3, 5, 10, 20],
-  onClick: function(date, nb) {
-    
-    if (clickDate !== null && clickDate.toDateString() == date.toDateString()) {
-      clickDate = null;
-    } else {
-      clickDate = date;
-    }
-    
-    vue.filterDate(clickDate);
-    
+function monthAgo(month) {
+  date = new Date();
+  date.setMonth(date.getMonth() - (month-1), 1);
+  return date;
+}
+
+function calInit() {
+  
+  var width = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+  
+  if (width != windowWidth) {
+    windowWidth = width;
+  } else {
+    return false;
   }
-});
+  
+  var months = 12;
+  
+  if (width < 450) {
+    months = 5;
+  } else if (width < 520) {
+    months = 6;
+  } else if (width < 600) {
+    months = 7;
+  } else if (width < 768) {
+    months = 8;
+  } else if (width < 992) {
+    months = 10;
+  }
+  
+  if (cal._completed) {
+    cal.destroy();
+    cal = new CalHeatMap();
+  }
+  
+  setTimeout(function() {
+    cal.init({
+      animationDuration: 0,
+      data: "/api/heatmap",
+      domain: "month",
+      start: monthAgo(months),
+      domainGutter: 10,
+      range: months,
+      legend: [1, 3, 5, 10, 20],
+      onClick: function(date, nb) {
+        
+        if (clickDate !== null && clickDate.toDateString() == date.toDateString()) {
+          clickDate = null;
+        } else {
+          clickDate = date;
+        }
+        
+        vue.filterDate(clickDate);
+        
+      }
+    });
+  }, 1);
+  
+}
+calInit();
+
+window.onresize = function() {
+  
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout);
+  }
+  resizeTimeout = setTimeout(function() {
+      calInit();
+  }, 500);
+  
+};
 
 // Set moment locale
 moment.locale(navigator.language || navigator.userLanguage);
 
+// Vue
 var apiURL = '/api';
 
 var vue = new Vue({
