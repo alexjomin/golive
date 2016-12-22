@@ -35,7 +35,7 @@ var vue = new Vue({
   data: {
     data: [],
     deliveries: [],
-    softwares: {},
+    softwares: [],
     environments: [],
     currentSoft: "",
     currentEnv: "",
@@ -136,19 +136,32 @@ var vue = new Vue({
       xhr.onload = function () {
         d = JSON.parse(xhr.responseText);
         self.data = d;
-        var index;
+        var index, i;
         
-        for (var i = 0; i < d.length ; i++) {
-            self.softwares[d[i].software] = true;
-            
-            index = self.environments.indexOf(d[i].environment);
-            if (index === -1) {
-              self.environments.push(d[i].environment);
-              index = self.environments.length-1;
-            }
-            
-            self.data[i].environmentColor = self.colors[index];
-            
+        for (i = 0; i < d.length ; i++) {
+          
+          index = self.softwares.indexOf(d[i].software);
+          if (index === -1) {
+            self.softwares.push(d[i].software);
+            index = self.softwares.length-1;
+          }
+          
+          index = self.environments.indexOf(d[i].environment);
+          if (index === -1) {
+            self.environments.push(d[i].environment);
+            index = self.environments.length-1;
+          }
+          
+        }
+        
+        self.softwares.sort();
+        self.environments.sort();
+        
+        for (i in self.data) {
+          
+          index = self.environments.indexOf(self.data[i].environment);
+          self.data[i].environmentColor = self.colors[index];
+          
         }
         
         self.populateDeliveries(self.data);
