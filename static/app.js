@@ -26,6 +26,45 @@ cal.init({
 // Set moment locale
 moment.locale(navigator.language || navigator.userLanguage);
 
+// infinite scroll
+var scrollTimeout = 0;
+function moreInViewport() {
+  
+  var el = document.querySelector('.timeline-more'),
+    top	= el.offsetTop,
+	  tmp = el;
+	
+	while (tmp.offsetParent) {
+		
+		tmp = tmp.offsetParent;
+		top += tmp.offsetTop;
+		
+	}
+	
+	var windowInnerHeight = window.innerHeight;
+	
+	return (
+		top < (window.pageYOffset + windowInnerHeight)
+	);
+	
+}
+
+window.onscroll = function() {
+  
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = 0;
+  }
+  
+  scrollTimeout = setTimeout(function() {
+    if (moreInViewport()) {
+      vue.showMore();
+    }
+  }, 30);
+  
+};
+
+// Vue
 var apiURL = '/api';
 
 var vue = new Vue({
@@ -35,6 +74,8 @@ var vue = new Vue({
   data: {
     data: [],
     deliveries: [],
+    deliveriesLimit: 10,
+    deliveriesStep: 10,
     softwares: [],
     environments: [],
     currentSoft: "",
@@ -167,6 +208,11 @@ var vue = new Vue({
         self.populateDeliveries(self.data);
       };
       xhr.send();
+    },
+    showMore: function() {
+      
+      this.deliveriesLimit+= this.deliveriesStep;
+      
     }
   }
 });
