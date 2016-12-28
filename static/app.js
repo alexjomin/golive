@@ -1,6 +1,5 @@
 var cal = new CalHeatMap();
 var startDate = new Date();
-var clickDate = null;
 startDate.setMonth(startDate.getMonth() - 11, 1);
 
 cal.init({
@@ -12,13 +11,7 @@ cal.init({
   legend: [1, 3, 5, 10, 20],
   onClick: function(date, nb) {
     
-    if (clickDate !== null && clickDate.toDateString() == date.toDateString()) {
-      clickDate = null;
-    } else {
-      clickDate = date;
-    }
-    
-    vue.filterDate(clickDate);
+    vue.filterDate(date);
     
   }
 });
@@ -39,6 +32,7 @@ var vue = new Vue({
     environments: [],
     currentSoft: "",
     currentEnv: "",
+    currentDate: "",
     colors: [
       '#2ecc71',
       '#5bc0de',
@@ -59,8 +53,11 @@ var vue = new Vue({
       var newline = v.indexOf('\n');
       return newline > 0 ? v.slice(0, newline) : v;
     },
-    formatDate: function (v) {
+    formatDateTime: function (v) {
       return moment(v).format('LLLL');
+    },
+    formatDate: function (v) {
+      return moment(v).format('LL');
     },
     getChangelogURL: function(v) {
       if(v.repository.length === 0) return;
@@ -85,7 +82,7 @@ var vue = new Vue({
       }
       
     },
-    filter: function(name){
+    filterSoft: function(name){
       
       this.deliveries = [];
       
@@ -113,15 +110,16 @@ var vue = new Vue({
     },
     filterDate: function(date){
       
-      if (date === null) {
+      if (this.currentDate && this.currentDate.toString() == date.toString()) {
+        this.currentDate = "";
         this.populateDeliveries(this.data);
         return;
       }
       
-      date = date.toDateString();
+      this.currentDate = date;
       var data = [];
       for (var i in this.data) {
-        if ((new Date(this.data[i].date)).toDateString() == date) {
+        if ((new Date(this.data[i].date)).toDateString() == date.toDateString()) {
           data.push(this.data[i]);
         }
       }

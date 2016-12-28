@@ -24,7 +24,7 @@
             <span 
                 class="label soft" 
                 v-for="(item, key) in softwares" 
-                v-on:click="filter(item)"
+                v-on:click="filterSoft(item)"
                 v-bind:class="{'label-danger': currentSoft===item, 'label-default': (currentSoft!==item && !currentSoft), 'label-default label-off': (currentSoft!==item && currentSoft)}"
             >
                 {{item}}
@@ -39,10 +39,38 @@
                 v-bind:class="{'label-danger': currentEnv===item, 'label-default': (currentEnv!==item && !currentEnv), 'label-default label-off': (currentEnv!==item && currentEnv)}"
                 v-bind:style="{ backgroundColor: colors[key] }"
             >
-                {{item}}
+                {{ item }}
             </span>
         </h4>
-
+        <div 
+          v-if="(currentSoft.length !== 0 || currentEnv.length !== 0 || currentDate.length !== 0)"
+        >
+          <h4><span class="glyphicon glyphicon-info-sign"></span> Filters</h4>
+          <h4>
+            <span 
+                class="label filter label-danger" 
+                v-if="(currentSoft.length !== 0)" 
+                v-on:click="filterSoft(currentSoft)" draggable=""
+            >
+                <b>Software :</b> {{ currentSoft }}
+            </span>
+            <span 
+                class="label filter label-danger" 
+                v-if="(currentEnv.length !== 0)" 
+                v-on:click="filterEnv(currentEnv)" 
+            >
+                <b>Environment :</b> {{ currentEnv }}
+            </span>
+            <span 
+                class="label filter label-danger" 
+                v-if="(currentDate.length !== 0)" 
+                v-on:click="filterDate(currentDate)" 
+            >
+                <b>Date :</b> {{ currentDate | formatDate }}
+            </span>
+          </h4>
+        </div>
+        
         <ul class="timeline">
             <li v-for="delivery in deliveries" 
                 v-bind:class="delivery.date"
@@ -55,7 +83,7 @@
                             <!--span class="pull-right glyphicon glyphicon-trash" v-on:click="remove(delivery.date)"></span-->
                         </h4>
                         <p>
-                            <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{delivery.date | formatDate}}</small>
+                            <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{delivery.date | formatDateTime}}</small>
                         </p>
                         
                     </div>

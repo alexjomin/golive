@@ -14,6 +14,15 @@ h4 {
     margin-right: 5px;
     cursor: pointer;
 }
+.label-danger {
+  cursor: pointer;
+}
+.label-danger:hover {
+  text-decoration: line-through;
+}
+.label-danger b {
+  color: rgba(256, 256, 256, 0.5);
+}
 
 .timeline {
     list-style: none;
@@ -111,6 +120,9 @@ h4 {
 }
 .timeline-body>p+p {
     margin-top: 5px
+}
+.glyphicon {
+  top: 2px;
 }
 .timeline-badge>.glyphicon {
     margin-right: 0px;
