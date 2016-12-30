@@ -41,7 +41,7 @@ var vue = new Vue({
   },
 
   created: function () {
-    this.fetchData();
+    this.fetchData(true);
   },
 
   watch: {
@@ -66,6 +66,69 @@ var vue = new Vue({
   },
 
   methods: {
+    setLocation: function(key, value) {
+      
+      // Get location hash
+      var hash = location.hash.replace('#', '').split('&'),
+        isChanged = false,
+        i;
+      
+      // Convert value
+      value = encodeURIComponent(value);
+      
+      // For each hash
+      for (i in hash) {
+        
+        hash[i] = hash[i].split('=');
+        
+        // If the key already exist, replace it
+        if (hash[i][0] == key) {
+          hash[i][1] = value;
+          isChanged = true;
+        }
+        
+      }
+      
+      // If the key is new, add it
+      if (isChanged === false) {
+        hash.push([key, value]);
+      }
+      
+      // For each hash, create the hashReturn if the value isn't empty
+      var hashReturn = [];
+      for (i in hash) {
+        if (hash[i][1]) {
+          hashReturn.push(hash[i].join('='));
+        }
+      }
+      
+      location.hash = hashReturn.join('&');
+      
+    },
+    initLocation: function() {
+      
+      // Get location hash
+      var hash = location.hash.replace('#', '').split('&');
+      
+      // For each hash, filter by the key
+      for (var i in hash) {
+        
+        hash[i] = hash[i].split('=');
+        
+        key = hash[i][0];
+        value = decodeURIComponent(hash[i][1]);
+        
+        if (key == 'software') {
+          this.filterSoft(value);
+        } else if (key == 'environment') {
+          this.filterEnv(value);
+        } else if (key == 'date') {
+          this.filterDate(new Date(value));
+        }
+        
+      }
+      
+    },
     populateDeliveries: function(data) {
       
       this.deliveries = [];
@@ -74,7 +137,8 @@ var vue = new Vue({
         for (var i in data) {
           if (
               (this.currentSoft === "" || data[i].software == this.currentSoft) &&
-              (this.currentEnv === "" || data[i].environment == this.currentEnv)
+              (this.currentEnv === "" || data[i].environment == this.currentEnv) &&
+              (this.currentDate === "" || ((new Date(data[i].date)).toDateString() == this.currentDate.toDateString()))
             ) {
             this.deliveries.push(data[i]);
           }
@@ -92,6 +156,7 @@ var vue = new Vue({
         this.currentSoft = name;
       }
       
+      this.setLocation('software', this.currentSoft);
       this.populateDeliveries(this.data);
       
     },
@@ -105,6 +170,7 @@ var vue = new Vue({
         this.currentEnv = name;
       }
       
+      this.setLocation('environment', this.currentEnv);
       this.populateDeliveries(this.data);
       
     },
@@ -112,22 +178,15 @@ var vue = new Vue({
       
       if (this.currentDate && this.currentDate.toString() == date.toString()) {
         this.currentDate = "";
-        this.populateDeliveries(this.data);
-        return;
+      } else {
+        this.currentDate = date;
       }
       
-      this.currentDate = date;
-      var data = [];
-      for (var i in this.data) {
-        if ((new Date(this.data[i].date)).toDateString() == date.toDateString()) {
-          data.push(this.data[i]);
-        }
-      }
-      
-      this.populateDeliveries(data);
+      this.setLocation('date', this.currentDate);
+      this.populateDeliveries(this.data);
       
     },
-    fetchData: function () {
+    fetchData: function (first) {
       var xhr = new XMLHttpRequest();
       var self = this;
       xhr.open('GET', apiURL + "/deliveries");
@@ -163,6 +222,12 @@ var vue = new Vue({
         }
         
         self.populateDeliveries(self.data);
+        
+        // On first fetch, initLocation hash
+        if (first === true) {
+          self.initLocation();
+        }
+        
       };
       xhr.send();
     }
