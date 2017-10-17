@@ -1,7 +1,7 @@
 language: go
 
 go:
-- 1.7
+- 1.9
 
 services:
 - docker
@@ -24,8 +24,8 @@ after_success:
 - if [ "$TRAVIS_PULL_REQUEST" == "true" ]; then exit fi
 - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 - export REPO=$DOCKER_USER/golive
-- export COMMIT=${TRAVIS_COMMIT::6} 
-- echo $REPO:$COMMIT 
+- export COMMIT=${TRAVIS_COMMIT::6}
+- echo $REPO:$COMMIT
 - docker build -t $REPO:$COMMIT .
 - docker tag $REPO:$COMMIT $REPO:latest
 - docker push $REPO

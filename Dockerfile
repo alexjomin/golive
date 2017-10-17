@@ -1,5 +1,5 @@
 # minimal linux distribution
-FROM golang:1.7.3-wheezy
+FROM golang:1.9-wheezy
 
 # set the go path to import the source project
 WORKDIR $GOPATH/src/github.com/alexjomin/golive
