@@ -2,7 +2,7 @@
 
 ## Description
 
-With **golive**, keep track of your deliveries.
+With **golive**, keep a track of your deliveries.
 
 ### what, when and where ?
 
@@ -25,17 +25,17 @@ In a continious deployment workflow, it's sometimes difficult to remember **whic
 
 ## Install
 This project uses [Glide](https://github.com/Masterminds/glide), a Vendor Package Management
-	
+
 	glide install
 	make build
 
 ## Start
 
 	golive /tmp/db 8080
-	
+
 First Parameter is the path to the database (default is `./db`) and second is the port of the webserver (default is `80`).
 
-Golive persitance is based on [Bolt](https://github.com/boltdb/bolt), a pure Go key/value store. No need to install an extra database. Dead simple I was saying !
+Golive persitence is based on [Bolt](https://github.com/boltdb/bolt), a pure Go key/value store. No need to install an extra database. Dead simple I was saying !
 
 ## Docker
 
