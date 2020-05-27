@@ -134,6 +134,20 @@ h4 {
 .timeline-empty {
   color: #a5a5a5;
 }
+.timeline-more {
+  cursor: pointer;
+  margin-left: 55px;
+  margin-bottom: 20px;
+  float: left;
+  top: 19px;
+  padding: 8px 15px 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #efefef;
+}
+.timeline-more:hover {
+  background-color: #d4d4d4;
+}
 .label {
   display: inline-block;
   padding: .4em .6em;
